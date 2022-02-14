@@ -3,4 +3,4 @@ exports.commentData = require('./comments.js');
 exports.topicData = require('./topics.js');
 exports.userData = require('./users.js');
 
-const {topicData, articleData, userData, commentData} = devData
+// const {topicData, articleData, userData, commentData} = developmentData
