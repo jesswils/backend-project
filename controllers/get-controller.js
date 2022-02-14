@@ -1,4 +1,4 @@
-const { selectTopics, selectArticles } = require("../models/topics-model");
+const { selectTopics, selectArticles } = require("../models/get-model");
 
 exports.sendTopics = (req, res, next) => {
   // console.log('in the controller')
