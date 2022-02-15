@@ -17,15 +17,18 @@ app.patch('/api/articles/:article_id', patchArticle);
 // Error handling //
 ///////////////////
 
-
-
 app.all('/*', (req, res) => {
-  res.status(404).send({ message: 'path not found' });
+  res.status(500).send({ message: 'server error' });
 });
 
-app.use((err, req, res, next) => {
-  console.log(err);
-  res.status(500).send('server error');
-});
+
+// app.use((err, req, res, next) => {
+
+// })
+
+// app.use((err, req, res, next) => {
+//   res.status(500).send('server error');
+
+// });
 
 module.exports = app;

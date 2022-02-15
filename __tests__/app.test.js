@@ -78,15 +78,24 @@ describe("PATCH", () => {
 });
 
 
-  // describe("Error handling", () => {
-  //   test("status: 404 - returns a message for a resource that does not exist", () => {
-  //     return request(app)
-  //       .get("/api/notARoute")
-  //       .expect(404)
-  //       .then((response) => {
-  //         expect(response.body.msg).toBe("resource does not exist");
-  //       });
-  //   });
-  // });
+  describe("Error handling", () => {
+    test('status: 500 - if there is a server error, return a message', () => {
+      return request(app)
+        .get("/api/")
+        .expect(500)
+        .then((response) => {
+          expect(response.body.message).toBe('server error');
+        });
+    })
+    // test("status: 404 - returns a message for a resource that does not exist", () => {
+    //   return request(app)
+    //     .get("/api/notARoute")
+    //     .expect(404)
+    //     .then((response) => {
+    //       expect(response.body.msg).toBe("resource does not exist");
+    //     });
+    // });
+    
+  });
 
 afterAll(() => db.end());
