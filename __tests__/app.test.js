@@ -25,17 +25,6 @@ describe("GET", () => {
         });
     });
   });
-
-  describe("error handling", () => {
-    test("status: 404 - returns a message for a path not found", () => {
-      return request(app)
-        .get("/api/notARoute")
-        .expect(404)
-        .then((response) => {
-          expect(response.body.message).toBe("path not found");
-        });
-    });
-  });
 });
 
 describe("GET", () => {
@@ -87,4 +76,17 @@ describe("PATCH", () => {
     });
   });
 });
+
+
+  // describe("Error handling", () => {
+  //   test("status: 404 - returns a message for a resource that does not exist", () => {
+  //     return request(app)
+  //       .get("/api/notARoute")
+  //       .expect(404)
+  //       .then((response) => {
+  //         expect(response.body.msg).toBe("resource does not exist");
+  //       });
+  //   });
+  // });
+
 afterAll(() => db.end());
