@@ -72,8 +72,8 @@ describe("PATCH", () => {
         .send({ votes: 1 })
         .expect(200)
         .then((response) => {
-          expect(response.body.article).toEqual(expect.objectContaining(
-            {
+          expect(response.body.article).toEqual(
+            expect.objectContaining({
               article_id: 1,
               title: "Living in the shadow of a great man",
               topic: "mitch",
@@ -81,8 +81,8 @@ describe("PATCH", () => {
               body: "I find this existence challenging",
               created_at: expect.any(String),
               votes: 101,
-            }
-          ))
+            })
+          );
         });
     });
   });
