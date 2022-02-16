@@ -25,6 +25,15 @@ describe("GET", () => {
         });
     });
   });
+  describe("GET Error handling", () => {
+    test("status: 404 - returns a message for a route that does not exist", () => {
+      return request(app)
+        .get("/api/notARoute")
+        .expect(404)
+        .then((response) => {
+          expect(response.body.message).toBe("not found");
+        });
+    });
 });
 
 describe("GET", () => {
@@ -32,6 +41,8 @@ describe("GET", () => {
     test("status: 200 - should respond with an article object which should have the following properties: author, title, article_id, body, topic, created_at and votes.", () => {
       return request(app)
         .get("/api/articles/:article_id")
+        // amend test to valid endpoint
+        // repurpose test for /api/articles 
         .expect(200)
         .then((response) => {
           expect(response.body.article).toHaveLength(12);
@@ -75,27 +86,34 @@ describe("PATCH", () => {
         });
     });
   });
+  describe("PATCH Error handling", () => {
+    test("status: 400 - returns a message if required fields are missing", () => {
+      return request(app)
+        .patch("/api/articles/1")
+        .send({})
+        .expect(400)
+        .then((response) => {
+          expect(response.body.message).toBe("bad request");
+        });
+    });
+  });
 });
 
-
-  describe("Error handling", () => {
-    test('status: 500 - if there is a server error, return a message', () => {
-      return request(app)
-        .get("/api/")
-        .expect(500)
-        .then((response) => {
-          expect(response.body.message).toBe('server error');
-        });
-    })
-    // test("status: 404 - returns a message for a resource that does not exist", () => {
-    //   return request(app)
-    //     .get("/api/notARoute")
-    //     .expect(404)
-    //     .then((response) => {
-    //       expect(response.body.msg).toBe("resource does not exist");
-    //     });
-    // });
-    
-  });
+  // describe('GET by id', () => {
+  //   test('status: 404 - resource that doesn\'t exist', () => {
+  //     return request(app).get('/api/articles/2222222222').expect(404).then((response) => {
+  //       expect(response.body.message).toBe('not found')
+  //     })
+  //   })
+  //   test('status: 400 - invalid id', () => {
+  //     return request(app).get('/api/articles/notAnId').expect(400).then((response) => {
+  //       expect(response.body.message).toBe('bad request')
+  //     })
+  //   })
+  // })
+});
+  // repurpose the above tests 
+  // invalid inc vote value - 400
+  // 
 
 afterAll(() => db.end());

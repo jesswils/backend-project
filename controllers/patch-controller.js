@@ -6,7 +6,5 @@ exports.patchArticle = (req, res, next) => {
     .then((updatedArticle) => {
       res.status(200).send({ article: updatedArticle });
     })
-    .catch((err) => {
-      next(err);
-    });
+    .catch(next)
 };
