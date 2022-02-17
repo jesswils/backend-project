@@ -74,6 +74,7 @@ describe('GET', () => {
         .get('/api/users')
         .expect(200)
         .then((response) => {
+          expect(response.body.users).toHaveLength(4);
           response.body.users.forEach((user) => {
             expect(user).toEqual(
               expect.objectContaining({
