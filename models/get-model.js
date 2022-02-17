@@ -24,4 +24,3 @@ exports.selectUsers = () => {
         return results.rows
     })
 }
-
