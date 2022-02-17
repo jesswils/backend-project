@@ -68,6 +68,23 @@ describe('GET', () => {
         });
     });
   });
+  describe('/api/users', () => {
+    test('status 200: should respond with an array of objects, each of which should have the a username propery', () => {
+      return request(app)
+        .get('/api/users')
+        .expect(200)
+        .then((response) => {
+          response.body.users.forEach((user) => {
+            expect(user).toEqual(
+              expect.objectContaining({
+                username: expect.any(String),
+              })
+            )
+          });
+        });
+    });
+  });
+
 });
 
 describe('GET Error handling', () => {
