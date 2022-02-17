@@ -71,14 +71,23 @@ describe('GET', () => {
 });
 
 describe('GET Error handling', () => {
-  test('status: 404 - returns a message for a route that does not exist', () => {
-    return request(app)
-      .get('/api/notARoute')
-      .expect(404)
-      .then((response) => {
-        expect(response.body.message).toBe('not found');
-      });
-  });
+  describe('GET All', () => {
+    test('status: 404 - returns a message for a route that does not exist', () => {
+      return request(app)
+        .get('/api/notARoute')
+        .expect(404)
+        .then((response) => {
+          expect(response.body.message).toBe('not found');
+        });
+    });
+  })
+  describe('GET by Id', () => {
+    test('status: 400 - returns a message for an invalid id', () => {
+      return request(app).get('/api/articles/notAnId').expect(400).then((response) => {
+        expect(response.body.message).toBe('bad request');
+      })
+    })
+  })
 });
 
 describe('PATCH', () => {
