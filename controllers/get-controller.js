@@ -1,4 +1,9 @@
-const { selectTopics, selectArticles } = require("../models/get-model");
+const res = require('express/lib/response');
+const {
+  selectTopics,
+  selectArticles,
+  selectArticlesById,
+} = require('../models/get-model');
 
 exports.sendTopics = (req, res, next) => {
   // console.log('in the controller')
@@ -12,8 +17,18 @@ exports.sendTopics = (req, res, next) => {
 };
 
 exports.sendArticles = (req, res, next) => {
-    // console.log('in the controller')
   selectArticles()
+    .then((articles) => {
+      res.status(200).send({ articles });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.sendArticlesById = (req, res, next) => {
+  const { article_id } = req.params;
+  selectArticlesById(article_id)
     .then((article) => {
       res.status(200).send({ article });
     })
