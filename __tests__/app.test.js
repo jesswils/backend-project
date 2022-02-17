@@ -29,11 +29,13 @@ describe('GET', () => {
 
 describe('GET', () => {
   describe('/api/articles', () => {
-    test('status 200: should respond with an article object which should have the following properties: author, title, article_id, body, topic, created_at and votes.', () => {
+    test.only('status 200: should respond with an article object which should have the following properties: author, title, article_id, body, topic, created_at and votes.', () => {
       return request(app)
         .get('/api/articles')
         .expect(200)
         .then((response) => {
+          console.log(response.body.articles)
+          expect(response.body.articles).toBeSortedBy('created_at', { descending: true })
           response.body.articles.forEach((article) => {
             expect(article).toEqual(
               expect.objectContaining({

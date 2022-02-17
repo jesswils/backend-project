@@ -12,10 +12,15 @@ exports.selectArticles = () => {
         return results.rows
     })
 }
-
 exports.selectArticlesById = (article_id) => {
     // console.log('in the model')
     return db.query('SELECT * FROM articles WHERE article_id = $1;', [article_id]).then((results) => {
+        return results.rows
+    })
+}
+
+exports.selectUsers = () => {
+    return db.query('SELECT username FROM users;').then((results) => {
         return results.rows
     })
 }
