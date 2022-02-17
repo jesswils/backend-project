@@ -3,6 +3,7 @@ const {
   selectTopics,
   selectArticles,
   selectArticlesById,
+  selectUsers,
 } = require('../models/get-model');
 
 exports.sendTopics = (req, res, next) => {
@@ -31,6 +32,16 @@ exports.sendArticlesById = (req, res, next) => {
   selectArticlesById(article_id)
     .then((article) => {
       res.status(200).send({ article });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.sendUsers = (req, res, next) => {
+  selectUsers()
+    .then((users) => {
+      res.status(200).send({ users });
     })
     .catch((err) => {
       next(err);
