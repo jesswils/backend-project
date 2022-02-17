@@ -8,8 +8,8 @@ exports.selectTopics = () => {
 };
 
 exports.selectArticles = () => {
-    return db.query('SELECT * FROM articles;').then((results) => {
-        return results.rows[0]
+    return db.query('SELECT author, title, article_id, created_at, topic, created_at, votes FROM articles ORDER BY created_at DESC;').then((results) => {
+        return results.rows
     })
 }
 

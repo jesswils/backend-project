@@ -34,17 +34,18 @@ describe('GET', () => {
         .get('/api/articles')
         .expect(200)
         .then((response) => {
-          expect(response.body.articles).toEqual(
-            expect.objectContaining({
-              article_id: expect.any(Number),
-              author: expect.any(String), // author is the username from the users table
-              body: expect.any(String),
-              created_at: expect.any(String),
-              title: expect.any(String),
-              topic: expect.any(String),
-              votes: expect.any(Number),
-            })
-          );
+          response.body.articles.forEach((article) => {
+            expect(article).toEqual(
+              expect.objectContaining({
+                article_id: expect.any(Number),
+                author: expect.any(String), // author is the username from the users table
+                created_at: expect.any(String),
+                title: expect.any(String),
+                topic: expect.any(String),
+                votes: expect.any(Number),
+              })
+            )
+          })
         });
     });
   });
@@ -81,7 +82,7 @@ describe('GET Error handling', () => {
         });
     });
   })
-  describe('GET by Id', () => {
+  describe('GET - api/articles/:article_id', () => {
     test('status: 400 - returns a message for an invalid id', () => {
       return request(app).get('/api/articles/notAnId').expect(400).then((response) => {
         expect(response.body.message).toBe('bad request');
