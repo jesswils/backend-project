@@ -34,7 +34,9 @@ describe('GET', () => {
         .get('/api/articles')
         .expect(200)
         .then((response) => {
-          expect(response.body.articles).toBeSortedBy('created_at', { descending: true })
+          expect(response.body.articles).toBeSortedBy('created_at', {
+            descending: true,
+          });
           response.body.articles.forEach((article) => {
             expect(article).toEqual(
               expect.objectContaining({
@@ -45,8 +47,8 @@ describe('GET', () => {
                 topic: expect.any(String),
                 votes: expect.any(Number),
               })
-            )
-          })
+            );
+          });
         });
     });
   });
@@ -56,7 +58,6 @@ describe('GET', () => {
         .get('/api/articles/1')
         .expect(200)
         .then((response) => {
-          console.log(response.body.article)
           expect(response.body.article[0]).toEqual(
             expect.objectContaining({
               article_id: expect.any(Number),
@@ -66,7 +67,7 @@ describe('GET', () => {
               title: expect.any(String),
               topic: expect.any(String),
               votes: expect.any(Number),
-              comment_count: expect.any(String)
+              comment_count: expect.any(String),
             })
           );
         });
@@ -84,12 +85,11 @@ describe('GET', () => {
               expect.objectContaining({
                 username: expect.any(String),
               })
-            )
+            );
           });
         });
     });
   });
-
 });
 
 describe('GET Error handling', () => {
@@ -102,14 +102,17 @@ describe('GET Error handling', () => {
           expect(response.body.message).toBe('not found');
         });
     });
-  })
+  });
   describe('GET - api/articles/:article_id', () => {
     test('status: 400 - returns a message for an invalid id', () => {
-      return request(app).get('/api/articles/notAnId').expect(400).then((response) => {
-        expect(response.body.message).toBe('bad request');
-      })
-    })
-  })
+      return request(app)
+        .get('/api/articles/notAnId')
+        .expect(400)
+        .then((response) => {
+          expect(response.body.message).toBe('bad request');
+        });
+    });
+  });
 });
 
 describe('PATCH', () => {
