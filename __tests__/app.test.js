@@ -29,7 +29,7 @@ describe('GET', () => {
 
 describe('GET', () => {
   describe('/api/articles', () => {
-    test.only('status 200: should respond with an article object which should have the following properties: author, title, article_id, body, topic, created_at and votes.', () => {
+    test('status 200: should respond with an article object which should have the following properties: author, title, article_id, body, topic, created_at and votes.', () => {
       return request(app)
         .get('/api/articles')
         .expect(200)
@@ -71,7 +71,7 @@ describe('GET', () => {
     });
   });
   describe('/api/articles/:article_id/comments', () => {
-    test.only('should respond with an array of comments for the given `article_id` of which each comment should have the following properties: comment_id, votes, created_at, author and body', () => {
+    test('should respond with an array of comments for the given `article_id` of which each comment should have the following properties: comment_id, votes, created_at, author and body', () => {
       return request(app)
         .get('/api/articles/1/comments')
         .expect(200)
@@ -90,10 +90,6 @@ describe('GET', () => {
         });
     });
   })
-
-  // sad apth: incorrect value type
-  // valid article but no comments associated? - empty array?
-  // no comments?
 
   describe('/api/users', () => {
     test('status 200: should respond with an array of objects, each of which should have the a username propery', () => {
@@ -130,6 +126,14 @@ describe('GET Error handling', () => {
     test('status: 400 - returns a message for an invalid id', () => {
       return request(app).get('/api/articles/notAnId').expect(400).then((response) => {
         expect(response.body.message).toBe('bad request');
+      })
+    })
+  })
+
+  describe('GET /api/articles/:article_id/comments', () => {
+    test('status 200: returns an empty array if the article_id is valid but there are no associated comments', () => {
+      return request(app).get('/api/articles/4/comments').expect(200).then((response) => {
+        expect(response.body.comments).toEqual([])
       })
     })
   })
