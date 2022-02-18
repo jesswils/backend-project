@@ -20,6 +20,12 @@ exports.selectArticlesById = (article_id) => {
     })
 }
 
+exports.selectCommentsById = (article_id) => {
+    return db.query('SELECT comments.body, comments.votes, comments.author, comments.created_at, comments.comment_id FROM comments LEFT JOIN articles ON comments.article_id = articles.article_id WHERE articles.article_id = $1;', [article_id]).then((results) => {
+        return results.rows
+    })
+}
+
 exports.selectUsers = () => {
     return db.query('SELECT username FROM users;').then((results) => {
         return results.rows

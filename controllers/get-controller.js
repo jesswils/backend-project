@@ -4,6 +4,7 @@ const {
   selectArticles,
   selectArticlesById,
   selectUsers,
+  selectCommentsById,
 } = require('../models/get-model');
 
 exports.sendTopics = (req, res, next) => {
@@ -37,6 +38,17 @@ exports.sendArticlesById = (req, res, next) => {
       next(err);
     });
 };
+
+exports.sendCommentsById = (req, res, next) => {
+  const { article_id } = req.params;
+  selectCommentsById(article_id)
+    .then((comments) => {
+      res.status(200).send({ comments })
+    })
+    .catch((err) => {
+      next(err)
+    })
+}
 
 exports.sendUsers = (req, res, next) => {
   selectUsers()

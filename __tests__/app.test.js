@@ -77,6 +77,27 @@ describe('GET', () => {
         });
     });
   });
+  describe('/api/articles/:article_id/comments', () => {
+    test('should respond with an array of comments for the given `article_id` of which each comment should have the following properties: comment_id, votes, created_at, author and body', () => {
+      return request(app)
+        .get('/api/articles/1/comments')
+        .expect(200)
+        .then(({ body }) => {
+          const { comments } = body;
+          // console.log(comments)
+          expect(comments).toHaveLength(11);
+          expect(comments).toBeInstanceOf(Array)
+          comments.forEach((comment) => {
+            expect(comment.hasOwnProperty('comment_id'))
+            expect(comment.hasOwnProperty('created_at'))
+            expect(comment.hasOwnProperty('author'))
+            expect(comment.hasOwnProperty('body'))
+            expect(comment.hasOwnProperty('votes'))
+          })
+        });
+    });
+  })
+
   describe('/api/users', () => {
     test('status 200: should respond with an array of objects, each of which should have the a username propery', () => {
       return request(app)
@@ -109,14 +130,19 @@ describe('GET Error handling', () => {
   });
   describe('GET - api/articles/:article_id', () => {
     test('status: 400 - returns a message for an invalid id', () => {
-      return request(app)
-        .get('/api/articles/notAnId')
-        .expect(400)
-        .then((response) => {
-          expect(response.body.message).toBe('bad request');
-        });
-    });
-  });
+      return request(app).get('/api/articles/notAnId').expect(400).then((response) => {
+        expect(response.body.message).toBe('bad request');
+      })
+    })
+  })
+
+  describe('GET /api/articles/:article_id/comments', () => {
+    test('status 200: returns an empty array if the article_id is valid but there are no associated comments', () => {
+      return request(app).get('/api/articles/4/comments').expect(200).then((response) => {
+        expect(response.body.comments).toEqual([])
+      })
+    })
+  })
 });
 
 describe('PATCH', () => {
