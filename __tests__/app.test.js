@@ -60,16 +60,16 @@ describe('GET', () => {
         .then((response) => {
           expect(response.body.article[0]).toEqual(
             expect.objectContaining({
-              article_id: expect.any(Number),
-              author: expect.any(String), // author is the username from the users table
-              body: expect.any(String),
+              article_id: 1,
+              author: 'butter_bridge',
+              title: 'Living in the shadow of a great man',
+              body: 'I find this existence challenging',
               created_at: expect.any(String),
-              title: expect.any(String),
-              topic: expect.any(String),
-              votes: expect.any(Number),
-              comment_count: expect.any(String),
+              topic: 'mitch',
+              votes: 100,
+              comment_count: '11',
             })
-          );
+          )
         });
     });
   });
