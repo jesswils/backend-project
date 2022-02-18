@@ -34,8 +34,9 @@ describe('GET', () => {
         .get('/api/articles')
         .expect(200)
         .then((response) => {
-          console.log(response.body.articles)
-          expect(response.body.articles).toBeSortedBy('created_at', { descending: true })
+          expect(response.body.articles).toBeSortedBy('created_at', {
+            descending: true,
+          });
           response.body.articles.forEach((article) => {
             expect(article).toEqual(
               expect.objectContaining({
@@ -46,28 +47,29 @@ describe('GET', () => {
                 topic: expect.any(String),
                 votes: expect.any(Number),
               })
-            )
-          })
+            );
+          });
         });
     });
   });
   describe('/api/articles/:article_id', () => {
-    test('status: 200 - should respond with an article object which should have the following properties: author, title, article_id, body, topic, created_at and votes.', () => {
+    test.only('status: 200 - should respond with an article object which should have the following properties: author, title, article_id, body, topic, created_at and votes.', () => {
       return request(app)
         .get('/api/articles/1')
         .expect(200)
         .then((response) => {
           expect(response.body.article[0]).toEqual(
             expect.objectContaining({
-              article_id: expect.any(Number),
-              author: expect.any(String), // author is the username from the users table
-              body: expect.any(String),
+              article_id: 1,
+              author: 'butter_bridge',
+              title: 'Living in the shadow of a great man',
+              body: 'I find this existence challenging',
               created_at: expect.any(String),
-              title: expect.any(String),
-              topic: expect.any(String),
-              votes: expect.any(Number),
+              topic: 'mitch',
+              votes: 100,
+              comment_count: '11',
             })
-          );
+          )
         });
     });
   });
@@ -83,12 +85,11 @@ describe('GET', () => {
               expect.objectContaining({
                 username: expect.any(String),
               })
-            )
+            );
           });
         });
     });
   });
-
 });
 
 describe('GET Error handling', () => {
@@ -101,14 +102,17 @@ describe('GET Error handling', () => {
           expect(response.body.message).toBe('not found');
         });
     });
-  })
+  });
   describe('GET - api/articles/:article_id', () => {
     test('status: 400 - returns a message for an invalid id', () => {
-      return request(app).get('/api/articles/notAnId').expect(400).then((response) => {
-        expect(response.body.message).toBe('bad request');
-      })
-    })
-  })
+      return request(app)
+        .get('/api/articles/notAnId')
+        .expect(400)
+        .then((response) => {
+          expect(response.body.message).toBe('bad request');
+        });
+    });
+  });
 });
 
 describe('PATCH', () => {
