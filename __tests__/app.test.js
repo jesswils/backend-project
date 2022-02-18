@@ -34,7 +34,6 @@ describe('GET', () => {
         .get('/api/articles')
         .expect(200)
         .then((response) => {
-          console.log(response.body.articles)
           expect(response.body.articles).toBeSortedBy('created_at', { descending: true })
           response.body.articles.forEach((article) => {
             expect(article).toEqual(
@@ -71,6 +70,31 @@ describe('GET', () => {
         });
     });
   });
+  describe('/api/articles/:article_id/comments', () => {
+    test.only('should respond with an array of comments for the given `article_id` of which each comment should have the following properties: comment_id, votes, created_at, author and body', () => {
+      return request(app)
+        .get('/api/articles/1/comments')
+        .expect(200)
+        .then(({ body }) => {
+          const { comments } = body;
+          // console.log(comments)
+          expect(comments).toHaveLength(11);
+          expect(comments).toBeInstanceOf(Array)
+          comments.forEach((comment) => {
+            expect(comment.hasOwnProperty('comment_id'))
+            expect(comment.hasOwnProperty('created_at'))
+            expect(comment.hasOwnProperty('author'))
+            expect(comment.hasOwnProperty('body'))
+            expect(comment.hasOwnProperty('votes'))
+          })
+        });
+    });
+  })
+
+  // sad apth: incorrect value type
+  // valid article but no comments associated? - empty array?
+  // no comments?
+
   describe('/api/users', () => {
     test('status 200: should respond with an array of objects, each of which should have the a username propery', () => {
       return request(app)
