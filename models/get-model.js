@@ -31,3 +31,13 @@ exports.selectUsers = () => {
         return results.rows
     })
 }
+
+exports.postCommentById = (article_id, body, username) => {
+    return db.query(`INSERT INTO "comments"
+    (article_id, body, author)
+    VALUES
+    ($1,$2,$3)
+    RETURNING *;`, [article_id, body, username]).then((results) => {
+        return results.rows
+    })
+}

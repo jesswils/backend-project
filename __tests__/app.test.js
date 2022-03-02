@@ -53,7 +53,7 @@ describe('GET', () => {
     });
   });
   describe('/api/articles/:article_id', () => {
-    test.only('status: 200 - should respond with an article object which should have the following properties: author, title, article_id, body, topic, created_at and votes.', () => {
+    test('status: 200 - should respond with an article object which should have the following properties: author, title, article_id, body, topic, created_at and votes.', () => {
       return request(app)
         .get('/api/articles/1')
         .expect(200)
@@ -184,5 +184,26 @@ describe('PATCH', () => {
     });
   });
 });
+
+
+describe('POST', () => {
+  describe(' /api/articles/:article_id/comments', () => {
+    test('status: 201 - should post a comment. The request body accepts a username and body and responds with the posted comment.', () => {
+      return request(app).post('/api/articles/1/comments').send({ username: 'butter_bridge', body: 'this is it' }).expect(201).then(({ body }) => {
+        const { comment } = body;
+        expect(comment).toEqual(
+          expect.objectContaining({
+            article_id: 1,
+            author: 'butter_bridge',
+            body: 'this is it',
+            comment_id: 19,
+            created_at: expect.any(String),
+            votes: 0,
+          })
+        );
+      })
+    })
+  })
+})
 
 afterAll(() => db.end());

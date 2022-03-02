@@ -1,5 +1,5 @@
 const express = require('express');
-const { sendTopics, sendArticles, sendArticlesById, sendUsers, sendCommentsById } = require('./controllers/get-controller');
+const { sendTopics, sendArticles, sendArticlesById, sendUsers, sendCommentsById, publishCommentById } = require('./controllers/get-controller');
 const { patchArticle } = require('./controllers/patch-controller');
 
 const app = express();
@@ -17,6 +17,8 @@ app.get('/api/articles/:article_id/comments', sendCommentsById);
 app.get('/api/users', sendUsers);
 
 app.patch('/api/articles/:article_id', patchArticle);
+
+app.post('/api/articles/:article_id/comments', publishCommentById)
 
 
 ////////////////////

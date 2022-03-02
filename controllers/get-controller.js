@@ -5,6 +5,7 @@ const {
   selectArticlesById,
   selectUsers,
   selectCommentsById,
+  postCommentById
 } = require('../models/get-model');
 
 exports.sendTopics = (req, res, next) => {
@@ -59,3 +60,15 @@ exports.sendUsers = (req, res, next) => {
       next(err);
     });
 };
+
+exports.publishCommentById = (req, res, next) => {
+  const { article_id } = req.params
+  const { body, username } = req.body
+  postCommentById(article_id, body, username)
+    .then(([comment]) => {
+      res.status(201).send({ comment })
+    })
+    .catch((err) => {
+      next(err)
+    })
+}
