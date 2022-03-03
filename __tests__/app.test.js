@@ -204,6 +204,17 @@ describe('POST', () => {
       })
     })
   })
+  describe('POST Error handling ', () => {
+    test('status: 400 - missing or invalid post body', () => {
+      return request(app)
+        .post('/api/articles/16/comments')
+        .send({ username: 'butter_bridge', body: '' })
+        .expect(400)
+        .then((response) => {
+          expect(response.body.message).toBe('bad request');
+        });
+    });
+  })
 })
 
 afterAll(() => db.end());
