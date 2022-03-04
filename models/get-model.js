@@ -7,8 +7,19 @@ exports.selectTopics = () => {
     })
 };
 
-exports.selectArticles = () => {
-    return db.query('SELECT author, title, article_id, created_at, topic, created_at, votes FROM articles ORDER BY created_at DESC;').then((results) => {
+exports.selectArticles = (sort_by = 'created_at', order = 'desc', topic) => {
+    if (!['article_id', 'author', 'created_at', 'title', 'topic', 'votes'].includes(sort_by)) {
+        return Promise.reject({ status: 400, message: 'Invalid sort query' });
+    }
+    if (!['asc', 'desc'].includes(order)) {
+        return Promise.reject({ status: 400, message: 'Invalid order query' });
+    }
+    if (!['cats', 'mitch', 'coding', 'football', 'cooking', undefined].includes(topic)) {
+        return Promise.reject({ status: 400, message: 'Invalid topic query' });
+    }
+    const topicQuery = topic === undefined ? "" : `WHERE topic = '${topic}'`;
+
+    return db.query(`SELECT author, title, article_id, created_at, topic, votes FROM articles ${topicQuery} ORDER BY ${sort_by} ${order};`).then((results) => {
         return results.rows
     })
 }

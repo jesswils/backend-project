@@ -9,7 +9,6 @@ const {
 } = require('../models/get-model');
 
 exports.sendTopics = (req, res, next) => {
-  // console.log('in the controller')
   selectTopics()
     .then((topic) => {
       res.status(200).send({ topic });
@@ -20,7 +19,8 @@ exports.sendTopics = (req, res, next) => {
 };
 
 exports.sendArticles = (req, res, next) => {
-  selectArticles()
+  const { sort_by, order, topic } = req.query;
+  selectArticles(sort_by, order, topic)
     .then((articles) => {
       res.status(200).send({ articles });
     })

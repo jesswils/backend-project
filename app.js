@@ -27,13 +27,15 @@ app.post('/api/articles/:article_id/comments', publishCommentById)
 
 
 app.use((err, req, res, next) => {
-  console.log(err)
+  if (err.status !== undefined) {
+    res.status(err.status).send({ message: err.message })
+  }
   res.status(400).send({ message: 'bad request' });
   next(err)
 });
 
 app.use((err, req, res, next) => {
-  console.log(err)
+  // console.log(err)
   res.status(500).send({ message: 'server error' });
   next(err)
 })
