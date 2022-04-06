@@ -1,7 +1,7 @@
 const db = require('../db/connection');
+const fs = require('fs/promises');
 
 exports.selectTopics = () => {
-    // console.log('in the model')
     return db.query('SELECT * FROM topics;').then((results) => {
         return results.rows
     })
@@ -57,3 +57,8 @@ exports.deleteComment = (comment_id) => {
         return results.rows
     })
 }
+
+exports.fetchEndpoints = () => {
+    return fs.readFile(`${__dirname}/../endpoints.json`)
+        .then((contents) => JSON.parse(contents))
+};

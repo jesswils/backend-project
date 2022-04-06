@@ -1,10 +1,12 @@
 const express = require('express');
-const { sendTopics, sendArticles, sendArticlesById, sendUsers, sendCommentsById, publishCommentById, deleteCommentById } = require('./controllers/get-controller');
+const { sendTopics, sendArticles, sendArticlesById, sendUsers, sendCommentsById, publishCommentById, deleteCommentById, getEndpoints } = require('./controllers/get-controller');
 const { patchArticle } = require('./controllers/patch-controller');
 
 const app = express();
 
 app.use(express.json());
+
+app.get('/api', getEndpoints)
 
 app.get('/api/topics', sendTopics);
 
