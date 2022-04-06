@@ -12,15 +12,15 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/northcoders/be-nc-news.git"
+		"url": "git+https://github.com/jesswils/nc-news-jesswils.git"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"bugs": {
-		"url": "https://github.com/northcoders/be-nc-news/issues"
+		"url": "https://github.com/jesswils/nc-news-jesswils/issues"
 	},
-	"homepage": "https://github.com/northcoders/be-nc-news#readme",
+	"homepage": "https://github.com/jesswils/nc-news-jesswils#readme",
 	"devDependencies": {
 		"husky": "^7.0.0",
 		"jest": "^27.5.1",
