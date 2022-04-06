@@ -5,10 +5,10 @@ const {
   selectArticlesById,
   selectUsers,
   selectCommentsById,
-  postCommentById
 } = require('../models/get-model');
 
 exports.sendTopics = (req, res, next) => {
+  // console.log('in the controller')
   selectTopics()
     .then((topic) => {
       res.status(200).send({ topic });
@@ -19,8 +19,7 @@ exports.sendTopics = (req, res, next) => {
 };
 
 exports.sendArticles = (req, res, next) => {
-  const { sort_by, order, topic } = req.query;
-  selectArticles(sort_by, order, topic)
+  selectArticles()
     .then((articles) => {
       res.status(200).send({ articles });
     })
@@ -60,15 +59,3 @@ exports.sendUsers = (req, res, next) => {
       next(err);
     });
 };
-
-exports.publishCommentById = (req, res, next) => {
-  const { article_id } = req.params
-  const { body, username } = req.body
-  postCommentById(article_id, body, username)
-    .then(([comment]) => {
-      res.status(201).send({ comment })
-    })
-    .catch((err) => {
-      next(err)
-    })
-}
