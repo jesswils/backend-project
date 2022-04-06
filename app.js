@@ -1,5 +1,5 @@
 const express = require('express');
-const { sendTopics, sendArticles, sendArticlesById, sendUsers, sendCommentsById } = require('./controllers/get-controller');
+const { sendTopics, sendArticles, sendArticlesById, sendUsers, sendCommentsById, publishCommentById } = require('./controllers/get-controller');
 const { patchArticle } = require('./controllers/patch-controller');
 
 const app = express();
@@ -18,6 +18,8 @@ app.get('/api/users', sendUsers);
 
 app.patch('/api/articles/:article_id', patchArticle);
 
+app.post('/api/articles/:article_id/comments', publishCommentById)
+
 
 ////////////////////
 // Error handling //
@@ -25,13 +27,15 @@ app.patch('/api/articles/:article_id', patchArticle);
 
 
 app.use((err, req, res, next) => {
-  console.log(err)
+  if (err.status !== undefined) {
+    res.status(err.status).send({ message: err.message })
+  }
   res.status(400).send({ message: 'bad request' });
   next(err)
 });
 
 app.use((err, req, res, next) => {
-  console.log(err)
+  // console.log(err)
   res.status(500).send({ message: 'server error' });
   next(err)
 })
