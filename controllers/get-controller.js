@@ -6,7 +6,8 @@ const {
   selectUsers,
   selectCommentsById,
   postCommentById,
-  deleteComment
+  deleteComment,
+  fetchEndpoints
 } = require('../models/get-model');
 
 exports.sendTopics = (req, res, next) => {
@@ -82,3 +83,12 @@ exports.deleteCommentById = (req, res, next) => {
     next(err)
   })
 }
+
+exports.getEndpoints = (req, res, next) => {
+  fetchEndpoints().then((data) => {
+    res.status(200).send({ data })
+  })
+    .catch((err) => {
+      next(err)
+    })
+};
