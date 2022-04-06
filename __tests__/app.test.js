@@ -54,37 +54,46 @@ describe('GET', () => {
         });
     });
   });
-})
+});
 
 describe('/api/articles queries', () => {
   test('should return articles sorted by article_id', () => {
-    return request(app).get('/api/articles?sort_by=article_id').expect(200).then((response) => {
-      expect(response.body.articles).toBeSorted({
-        key: "article_id",
-        descending: true,
+    return request(app)
+      .get('/api/articles?sort_by=article_id')
+      .expect(200)
+      .then((response) => {
+        expect(response.body.articles).toBeSorted({
+          key: 'article_id',
+          descending: true,
+        });
       });
-    });
-  })
+  });
   test('should return articles in ascending order - defaults to descending', () => {
-    return request(app).get('/api/articles?order=asc').expect(200).then((response) => {
-      expect(response.body.articles).toBeSorted({
-        key: "created_at",
-        ascending: true,
+    return request(app)
+      .get('/api/articles?order=asc')
+      .expect(200)
+      .then((response) => {
+        expect(response.body.articles).toBeSorted({
+          key: 'created_at',
+          ascending: true,
+        });
       });
-    });
-  })
+  });
   test('should return filtered articles by topic "mitch"', () => {
-    return request(app).get('/api/articles?topic=mitch').expect(200).then((response) => {
-      response.body.articles.forEach((article) => {
-        expect(article).toEqual(
-          expect.objectContaining({
-            topic: 'mitch',
-          })
-        )
-      })
-    })
-  })
-})
+    return request(app)
+      .get('/api/articles?topic=mitch')
+      .expect(200)
+      .then((response) => {
+        response.body.articles.forEach((article) => {
+          expect(article).toEqual(
+            expect.objectContaining({
+              topic: 'mitch',
+            })
+          );
+        });
+      });
+  });
+});
 
 describe('/api/articles/:article_id', () => {
   test('status: 200 - should respond with an article object which should have the following properties: author, title, article_id, body, topic, created_at and votes.', () => {
@@ -103,7 +112,7 @@ describe('/api/articles/:article_id', () => {
             votes: 100,
             comment_count: '11',
           })
-        )
+        );
       });
   });
 });
@@ -116,17 +125,17 @@ describe('/api/articles/:article_id/comments', () => {
         const { comments } = body;
         // console.log(comments)
         expect(comments).toHaveLength(11);
-        expect(comments).toBeInstanceOf(Array)
+        expect(comments).toBeInstanceOf(Array);
         comments.forEach((comment) => {
-          expect(comment.hasOwnProperty('comment_id'))
-          expect(comment.hasOwnProperty('created_at'))
-          expect(comment.hasOwnProperty('author'))
-          expect(comment.hasOwnProperty('body'))
-          expect(comment.hasOwnProperty('votes'))
-        })
+          expect(comment.hasOwnProperty('comment_id'));
+          expect(comment.hasOwnProperty('created_at'));
+          expect(comment.hasOwnProperty('author'));
+          expect(comment.hasOwnProperty('body'));
+          expect(comment.hasOwnProperty('votes'));
+        });
       });
   });
-})
+});
 
 describe('/api/users', () => {
   test('status 200: should respond with an array of objects, each of which should have the a username propery', () => {
@@ -146,6 +155,18 @@ describe('/api/users', () => {
   });
 });
 
+describe('DELETE', () => {
+  describe('/api/comments/:comment_id', () => {
+    test('status 204: should delete the given comment by comment_id and respond with no content', () => {
+      return request(app)
+        .delete('/api/comments/1')
+        .expect(204)
+        .then((response) => {
+          expect(response.body).toEqual({});
+        });
+    });
+  });
+});
 
 describe('GET Error handling', () => {
   describe('GET All', () => {
@@ -160,46 +181,59 @@ describe('GET Error handling', () => {
   });
   describe('GET - api/articles/:article_id', () => {
     test('status: 400 - returns a message for an invalid id', () => {
-      return request(app).get('/api/articles/notAnId').expect(400).then((response) => {
-        expect(response.body.message).toBe('bad request');
-      })
-    })
-  })
+      return request(app)
+        .get('/api/articles/notAnId')
+        .expect(400)
+        .then((response) => {
+          expect(response.body.message).toBe('bad request');
+        });
+    });
+  });
 
   describe('GET /api/articles/:article_id/comments', () => {
     test('status 200: returns an empty array if the article_id is valid but there are no associated comments', () => {
-      return request(app).get('/api/articles/4/comments').expect(200).then((response) => {
-        expect(response.body.comments).toEqual([])
-      })
-    })
-  })
+      return request(app)
+        .get('/api/articles/4/comments')
+        .expect(200)
+        .then((response) => {
+          expect(response.body.comments).toEqual([]);
+        });
+    });
+  });
 
   describe('GET /api/articles queries', () => {
     test('status: 400 returns a message for an invalid sort query', () => {
-      return request(app).get('/api/articles?sort_by=bitle').expect(400).then((response) => {
-        // console.log(response)
-        expect(response.body.message).toBe('Invalid sort query')
-      })
-    })
-  })
+      return request(app)
+        .get('/api/articles?sort_by=bitle')
+        .expect(400)
+        .then((response) => {
+          expect(response.body.message).toBe('Invalid sort query');
+        });
+    });
+  });
 
   describe('GET /', () => {
     test('status 400: should respond with a message for an invalid order query', () => {
-      return request(app).get('/api/articles?order=dsc').expect(400).then((response) => {
-        expect(response.body.message).toBe('Invalid order query')
-      })
-    })
-  })
+      return request(app)
+        .get('/api/articles?order=dsc')
+        .expect(400)
+        .then((response) => {
+          expect(response.body.message).toBe('Invalid order query');
+        });
+    });
+  });
 
   describe('GET /', () => {
     test('status 400: should respond with a message for an invalid topic query', () => {
-      return request(app).get('/api/articles?topic=dogs').expect(400).then((response) => {
-        expect(response.body.message).toBe('Invalid topic query')
-      })
-    })
-  })
+      return request(app)
+        .get('/api/articles?topic=dogs')
+        .expect(400)
+        .then((response) => {
+          expect(response.body.message).toBe('Invalid topic query');
+        });
+    });
+  });
 });
-
 
 describe('PATCH', () => {
   describe('/api/articles/:article_id', () => {
@@ -245,25 +279,28 @@ describe('PATCH', () => {
   });
 });
 
-
 describe('POST', () => {
   describe(' /api/articles/:article_id/comments', () => {
     test('status: 201 - should post a comment. The request body accepts a username and body and responds with the posted comment.', () => {
-      return request(app).post('/api/articles/1/comments').send({ username: 'butter_bridge', body: 'this is it' }).expect(201).then(({ body }) => {
-        const { comment } = body;
-        expect(comment).toEqual(
-          expect.objectContaining({
-            article_id: 1,
-            author: 'butter_bridge',
-            body: 'this is it',
-            comment_id: 19,
-            created_at: expect.any(String),
-            votes: 0,
-          })
-        );
-      })
-    })
-  })
+      return request(app)
+        .post('/api/articles/1/comments')
+        .send({ username: 'butter_bridge', body: 'this is it' })
+        .expect(201)
+        .then(({ body }) => {
+          const { comment } = body;
+          expect(comment).toEqual(
+            expect.objectContaining({
+              article_id: 1,
+              author: 'butter_bridge',
+              body: 'this is it',
+              comment_id: 19,
+              created_at: expect.any(String),
+              votes: 0,
+            })
+          );
+        });
+    });
+  });
   describe('POST Error handling ', () => {
     test('status: 400 - missing or invalid post body', () => {
       return request(app)
@@ -274,7 +311,7 @@ describe('POST', () => {
           expect(response.body.message).toBe('bad request');
         });
     });
-  })
-})
+  });
+});
 
 afterAll(() => db.end());
