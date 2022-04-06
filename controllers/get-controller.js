@@ -5,7 +5,8 @@ const {
   selectArticlesById,
   selectUsers,
   selectCommentsById,
-  postCommentById
+  postCommentById,
+  deleteComment
 } = require('../models/get-model');
 
 exports.sendTopics = (req, res, next) => {
@@ -71,4 +72,13 @@ exports.publishCommentById = (req, res, next) => {
     .catch((err) => {
       next(err)
     })
+}
+
+exports.deleteCommentById = (req, res, next) => {
+  const { comment_id } = req.params
+  deleteComment(comment_id).then(() => {
+    res.status(204).send(`comment deleted`);
+  }).catch((err) => {
+    next(err)
+  })
 }
