@@ -31,26 +31,29 @@ describe('GET', () => {
 
 describe('GET', () => {
   describe('/api/articles', () => {
-    test('status 200: should respond with an article object which should have the following properties: author, title, article_id, body, topic, created_at and votes.', () => {
+    test('status 200: should respond with an articles array of article objects which should have the following properties: author, title, article_id, topic, created_at and votes. *updated feature to include comment_count*', () => {
       return request(app)
         .get('/api/articles')
         .expect(200)
-        .then((response) => {
-          expect(response.body.articles).toBeSortedBy('created_at', {
+        .then(({ body }) => {
+          const { articles } = body;
+          expect(articles).toBeSortedBy('created_at', {
             descending: true,
           });
-          response.body.articles.forEach((article) => {
+          expect(articles).toHaveLength(12);
+          articles.forEach((article) => {
             expect(article).toEqual(
               expect.objectContaining({
                 article_id: expect.any(Number),
-                author: expect.any(String), // author is the username from the users table
+                author: expect.any(String),
+                comment_count: expect.any(Number),
                 created_at: expect.any(String),
                 title: expect.any(String),
                 topic: expect.any(String),
                 votes: expect.any(Number),
               })
-            );
-          });
+            )
+          })
         });
     });
   });
@@ -63,6 +66,26 @@ describe('/api/articles queries', () => {
         key: "article_id",
         descending: true,
       });
+
+  describe('/api/articles/:article_id', () => {
+    test('status: 200 - should respond with an article object which should have the following properties: author, title, article_id, body, topic, created_at and votes.', () => {
+      return request(app)
+        .get('/api/articles/1')
+        .expect(200)
+        .then((response) => {
+          expect(response.body.article[0]).toEqual(
+            expect.objectContaining({
+              article_id: 1,
+              author: 'butter_bridge',
+              title: 'Living in the shadow of a great man',
+              body: 'I find this existence challenging',
+              created_at: expect.any(String),
+              topic: 'mitch',
+              votes: 100,
+              comment_count: '11',
+            })
+          )
+        });
     });
   })
   test('status 200: should return articles in ascending order - defaults to descending', () => {

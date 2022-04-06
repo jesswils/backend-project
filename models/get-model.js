@@ -25,7 +25,6 @@ exports.selectArticles = (sort_by = 'created_at', order = 'desc', topic) => {
 }
 
 exports.selectArticlesById = (article_id) => {
-    // console.log('in the model')
     return db.query(`SELECT author, title, article_id, body, topic, created_at, votes, (SELECT COUNT(*) FROM comments WHERE articles.article_id = comments.article_id) AS comment_count FROM articles WHERE article_id = $1`, [article_id]).then((results) => {
         return results.rows
     })
