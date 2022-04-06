@@ -57,7 +57,7 @@ describe('GET', () => {
 })
 
 describe('/api/articles queries', () => {
-  test('status 200: should return articles sorted by article_id', () => {
+  test('should return articles sorted by article_id', () => {
     return request(app).get('/api/articles?sort_by=article_id').expect(200).then((response) => {
       expect(response.body.articles).toBeSorted({
         key: "article_id",
@@ -65,7 +65,7 @@ describe('/api/articles queries', () => {
       });
     });
   })
-  test('status 200: should return articles in ascending order - defaults to descending', () => {
+  test('should return articles in ascending order - defaults to descending', () => {
     return request(app).get('/api/articles?order=asc').expect(200).then((response) => {
       expect(response.body.articles).toBeSorted({
         key: "created_at",
@@ -73,7 +73,7 @@ describe('/api/articles queries', () => {
       });
     });
   })
-  test('status 200: should return filtered articles by topic: "mitch"', () => {
+  test('should return filtered articles by topic "mitch"', () => {
     return request(app).get('/api/articles?topic=mitch').expect(200).then((response) => {
       response.body.articles.forEach((article) => {
         expect(article).toEqual(
