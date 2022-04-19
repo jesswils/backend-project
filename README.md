@@ -1,6 +1,6 @@
 # Northcoders News API
 
-NC News is a RESTful API intended to be a clone of the popular news website Reddit. This project has been developed using TDD with Jest and Supertest, Node.js, Axios, Express.js and PostgreSQL. The application is hosted via Heroku which you can visit [here](https://nc-news-jesswils3.herokuapp.com/api).
+NC News is an API intended to be a clone of the popular news website Reddit. This project has been developed using TDD with Jest and Supertest, Node.js, Axios, Express.js and PostgreSQL. The application is hosted via Heroku which you can visit [here](https://nc-news-jesswils3.herokuapp.com/api).
 
 ---
 
