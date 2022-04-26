@@ -1,6 +1,6 @@
 const res = require('express/lib/response');
 const request = require('supertest');
-const { response } = require('../app');
+const { response, resource } = require('../app');
 const app = require('../app');
 const db = require('../db/connection');
 const testData = require('../db/data/test-data/index');
@@ -186,7 +186,9 @@ describe('DELETE', () => {
         .expect(204)
         .then((response) => {
           expect(response.body).toEqual({});
-        });
+        }).catch((err) => {
+          console.log(err)
+        })
     });
   });
 });
